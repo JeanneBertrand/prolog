@@ -1,0 +1,107 @@
+-------------------------
+PARTIE 1
+-------------------------
+
+2. 
+warning singleton variable car nommer ces variables ne sert à rien car elles e sont utilisées nulle part ailleurs. La solution apportée dans la clause qui définit fille/2 est de remplacer les variables non utilisées par des '_', qui signifie n'importe quelle valeur.
+
+#habite à nice
+| ?- personne(X,_,_,_,nice).
+
+X = edouard ? ;
+
+X = agathe ? ;
+
+X = octave ? ;
+
+#2 parents dans la meme ville que l'enfant
+| ?- personne(X,_,_,_,Ville) , parent(Y,X) , parent(Z,X) , personne(Y,homme,_,_,Ville) , personne(Z,femme,_,_,Ville).
+
+Ville = nice
+X = octave
+Y = edouard
+Z = agathe ? ;
+
+Ville = toulouse
+X = elton
+Y = georges
+Z = marie_cecile ? ;
+
+Ville = toulouse
+X = vanessa
+Y = georges
+Z = marie_cecile ? ;
+
+3.mere(Mere, Enfant) :-
+   personne(Mere, femme, _,_,_),
+   parent(Mere, Enfant).
+	
+fils(Fils, Parent) :-
+   personne(Fils, homme, _, _, _),
+   parent(Parent, Fils).
+
+4. parent(P,E), personne(E,_,_,ecolier,_). cette requete demande tous les parents qui ont un enfant ecolier.
+
+5.
+parent_ecolier(P) :-
+    personne(P,_,_,_,_),
+    once((personne(E, _,_, ecolier,_), parent(P,E))).
+
+?- parent_ecolier(P).
+P = georges ;
+P = marie_cecile ;
+
+-------------------------
+PARTIE 2
+-------------------------
+
+1. 
+plat(P) :- meat(P).
+plat(P) :- fish(P).
+
+?- plat(P).
+P = grillade_de_boeuf ;
+P = poulet_au_tilleul ;
+P = bar_aux_algues ;
+P = truite_meuniere.
+?-  plat(sorbet_aux_poires).
+false.
+?- plat(poulet_au_tilleul).
+true .
+
+% repas_leger(R)vraie si R est une liste [Entree,Plat,Dessert,Boisson] représentant un repas de moinsde 600 calories.
+repas_leger(R) :- R= [E,P,D,B],
+     starter(E), plat(P), dessert(D), drink(B),
+    calories(E,X), calories(P, Y), calories(D, Z), calories(B, W),
+    (X+Y+Z+W)<600.
+
+?- repas_leger(R).
+R = [artichauts_melanie, bar_aux_algues, melon_surprise, mineral_water(hepar)] ;
+R = [artichauts_melanie, truite_meuniere, melon_surprise, mineral_water(hepar)] ;
+R = [truffes_sous_le_sel, truite_meuniere, melon_surprise, mineral_water(hepar)] ;
+R = [cresson_oeuf_poche, truite_meuniere, melon_surprise, mineral_water(hepar)] ;
+false.
+
+2.
+repas_leger(R, X, L) :- R= [E,P,D,B],
+     starter(E), plat(P), dessert(D), drink(B),
+    calories(E,V), calories(P, Y), calories(D, Z), calories(B, W),
+    X is (V+Y+Z+W), X<L.
+
+?- repas_leger(R,X,550).
+R = [artichauts_melanie, truite_meuniere, melon_surprise, mineral_water(hepar)],
+X = 526 ;
+false.
+
+
+
+-------------------------
+PARTIE 3
+-------------------------
+
+
+
+
+
+
+
